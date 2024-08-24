@@ -3,7 +3,7 @@ int yled = 3;
 int rled = 4;
 int botao = 5;
 int botaostate = 0;
-int gledgap = 10000;  //definindo as diversas variaveis que irao ser usadas ao longo do programa
+int gledgap = 10000;  // definindo as diversas variaveis que irao ser usadas ao longo do programa
 int yledgap = 2000;
 int rledgap = 10000;
 int pedestriangap = 3000;
@@ -12,7 +12,7 @@ unsigned long int amillis, oldmillis = 0;
 
 void setup() {
 	pinMode(gled, OUTPUT);
-	pinMode(yled, OUTPUT);  //setup dos led e botao na placa
+	pinMode(yled, OUTPUT);  // setup dos led e botao na placa
 	pinMode(rled, OUTPUT);
 	pinMode(botao, INPUT);
 }

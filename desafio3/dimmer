@@ -1,0 +1,24 @@
+#define LED 3 // define a variável LED como a porta PWM 3.
+
+
+void setup(){
+  pinMode(LED, OUTPUT); // setup do LED como saída, na porta 3.
+  Serial.begin(9600); // define a comunicação seriam na taxa de 9600 bauds.
+  Serial.print("Digite um valor de 0 a 255 para definir a intensidade do LED.\n"); // informa ao usuario o funcionamento do programa.
+}
+
+void loop(){
+
+  if (Serial.available() > 0){ // verifica se o serial está recebendo dados do buffer.
+    String intenstr = ""; // define a string que receberá o valor desejado.
+
+    intenstr += Serial.readStringUntil('\n'); // a leitura da string será feita até o usuário apertar enter.
+  
+    unsigned intensidade = intenstr.toInt(); // converte o conteúdo da string em um inteiro sem sinal. 
+    intensidade = constrain(intensidade, 0 , 255); // delimita o inteiro recebido no intervalo [0, 255]
+
+    analogWrite(LED, intensidade); // envia ao LED a intensidade de luz desejada através da simulação analógica.
+    Serial.print("Intensidade definida para: ");
+    Serial.println(intensidade); // informa ao usuário que a alteração foi feita com sucessi.
+  }
+}

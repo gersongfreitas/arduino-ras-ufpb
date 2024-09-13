@@ -1,0 +1,24 @@
+#define LDR_PIN A0  /** define as segintes constantes simbólicas como as suas posições na placa **/
+#define BUZZER_PIN 2 
+
+void setup(){
+  pinMode(BUZZER_PIN, OUTPUT);  /** atribui as constantes no pinMode para setar o sensor e o buzzer. **/
+  pinMode(LDR_PIN, INPUT);
+  Serial.begin(9600);  /** inicia o monitor serial com a taxa de 9600 abuds. **/
+}
+
+void loop(){
+  unsigned int luminosidade = analogRead(LDR_PIN); /** atribui a variável luminosidade a leitura do sensor LDR (que varia de 0  a 1023 **/
+  
+  Serial.print("Luminosidade: "); /** exibe continuamente o valor da luminosiidade registrada pelo sensor. **/
+  Serial.println(luminosidade);  
+
+  if (luminosidade < 700){ /** se o valor regsitrado pelo sensor for abaixo de 700 **/
+    tone(BUZZER_PIN, 360);
+    delay(500);
+    noTone(BUZZER_PIN); //** o buzzer será acionado a cada meio segundo, emitindo um som com frequencia de 360hz. **//
+    delay(500);
+  } else {
+    noTone(BUZZER_PIN); //** se não, o buzzer continua desligado. **/
+  }
+}

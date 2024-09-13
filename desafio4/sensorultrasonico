@@ -1,0 +1,60 @@
+#define TRIGGER_PIN 3
+#define ECHO_PIN 2
+#define RLED 8
+#define YLED 9
+#define GLED 10
+
+/****
+* DistanceFunction() : uma função que calcula a distância de um objeto a partir do tempo
+* gasto para o eco ser recebido pelo sensor.
+*
+* Parâmetros:
+* dur (entrada) : parâmetro que representa a duração do intervalo em microssegundos.
+* distance (saída) : parâmetro que representa a distância que o objeto se encontra do sensor..
+*
+* Retorno: qualquer valor que esteja dentro do raio do sensor, em centímetros.
+*
+****/
+
+unsigned int DistanceFunction (unsigned int dur){
+  unsigned int distance = dur * 0.01715;
+  return distance;
+}
+
+
+
+void setup(){
+  pinMode(RLED, OUTPUT);
+  pinMode(YLED, OUTPUT);
+  pinMode(GLED, OUTPUT);
+  pinMode(TRIGGER_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+  Serial.begin(9600);
+}
+
+void loop(){
+  digitalWrite(TRIGGER_PIN, HIGH); /** ativa a onda sonora do trigger.**/
+  delayMicroseconds(10); /** espera de 10 microsegundos. **/
+  digitalWrite(TRIGGER_PIN, LOW); /** desativa o trigger logo em seguida.**/
+
+  unsigned int duration = pulseIn(ECHO_PIN, HIGH); /** ativa o echo pin para se calcular quanto tempo ele ficou ligado até que a onda emitida pelo trigger seja refletida e recebida.**/
+  unsigned int distance = DistanceFunction(duration); /** atribui essa distancia a variavel distance. **/
+
+  Serial.println(distance); /** exibe continuamente no monitor serial a distância obtida.**/
+  Serial.print("cm\n");
+
+  if (distance > 20){ /** se o objeto estiver num raio maior que 20cm, apenas o led verde acenderá. **/
+    digitalWrite(RLED, LOW);
+    digitalWrite(YLED, LOW);
+    digitalWrite(GLED, HIGH);
+  } else if (distance > 10 && distance <= 20){ /** se o objeto estiver num raio menor que 20cm, e maior que 10cm, apenas o led amarelo acenderá. **/
+    digitalWrite(RLED, LOW);
+    digitalWrite(YLED, HIGH);
+    digitalWrite(GLED, LOW);
+  } else if (distance <= 10){ /** se o objeto estiver num raio menor que 10 cm, apenas o led vermelho acenderá. **/
+    digitalWrite(RLED, HIGH);
+    digitalWrite(YLED, LOW);
+    digitalWrite(GLED, LOW);
+  }
+
+}

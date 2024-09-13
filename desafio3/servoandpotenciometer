@@ -1,0 +1,19 @@
+#include <Servo.h> // inclui a biblioteca de servos do Arduino
+
+#define SERVO_PIN 3    // cria uma constante simbólica para cada pin que será usado.
+#define POTEN_PIN A0
+
+Servo servo;  // define uma variável servo do tipo servo.
+
+void setup(){
+  pinMode(POTEN_PIN, INPUT);
+  servo.attach(SERVO_PIN);  // setup nos pins que serão usados.
+}
+
+void loop(){
+  
+  unsigned rotate = analogRead(POTEN_PIN);  // leitura do sinal analógico do potenciômetro.
+  unsigned rotatemap = map(rotate, 0, 1023, 0, 180);  // mapeamento da variável de rotação para se adequar no intervalo de 0 a 180 graus.
+  rotatemap = constrain(rotatemap, 0, 180); // constrange a variável para garantir que ela se mantenha dentro intervalo definido.
+  servo.write(rotatemap);  // envia a informação ao servo.
+}

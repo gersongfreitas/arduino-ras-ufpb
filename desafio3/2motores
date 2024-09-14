@@ -1,0 +1,46 @@
+#define POTEN_PIN A0
+#define ENABLE_MOTOR1 3
+#define INPUT1_MOTOR1 4
+#define INPUT2_MOTOR1 5    /** define ao potenciometro, os enables e inputs do L923D suas respectivas portas **/
+#define ENABLE_MOTOR2 6    /** na placa do arduino como constantes simbólicas **/
+#define INPUT1_MOTOR2 7
+#define INPUT2_MOTOR2 8
+
+void setup(){
+    pinMode(POTEN_PIN, INPUT);
+    pinMode(ENABLE_MOTOR1, OUTPUT);
+    pinMode(ENABLE_MOTOR2, OUTPUT);
+    pinMode(INPUT1_MOTOR1, OUTPUT);  /** atribui a cada pin da placa sua respectiva porta e seu modo **/
+    pinMode(INPUT2_MOTOR1, OUTPUT);
+    pinMode(INPUT1_MOTOR2, OUTPUT);
+    pinMode(INPUT2_MOTOR1, OUTPUT);
+}
+
+void loop(){
+    unsigned int potencia = analogRead(POTEN_PIN)/4;  /** diminui o intervalo de valores do potenciometro para ser compatível com o byte da porta pwm **/
+  
+
+    if (potencia < 122){
+        analogWrite(ENABLE_MOTOR1, potencia);    /** até o potenciômetro cehar a antes de 122, eles vão gradualmente acelerando em determinados sentidos **/
+        digitalWrite(INPUT1_MOTOR1, HIGH);
+        digitalWrite(INPUT2_MOTOR1, LOW);
+
+
+        analogWrite(ENABLE_MOTOR2, potencia);
+        digitalWrite(INPUT1_MOTOR2, LOW);
+        digitalWrite(INPUT2_MOTOR2, HIGH);
+
+    }
+
+        if (potencia >= 122){
+        analogWrite(ENABLE_MOTOR1, potencia - 122);  /** quando o potenciometro passar de 122, os seus sentidos serao invertidos e começarao a acelerar do zero novamente **/
+        digitalWrite(INPUT1_MOTOR1, LOW);
+        digitalWrite(INPUT2_MOTOR1, HIGH);        
+
+
+        analogWrite(ENABLE_MOTOR2, potencia - 122);
+        digitalWrite(INPUT1_MOTOR2, HIGH);
+        digitalWrite(INPUT2_MOTOR2, LOW);
+
+    }
+}
